@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UNIT44 — Logo & Clothing Design</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --red:   #CC0000;
+      --black: #0a0a0a;
+      --white: #ffffff;
+      --off:   #f5f5f5;
+      --text:  #111111;
+      --muted: #666666;
+      --bw:    rgba(255,255,255,0.20);
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: var(--white);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 56px;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.78), transparent);
+      transition: background .3s, padding .3s;
+    }
+    nav.scrolled {
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(8px);
+      padding: 14px 56px;
+    }
+    .nav-logo {
+      font-size: 22px; font-weight: 900; letter-spacing: 5px;
+      text-transform: uppercase; color: var(--white);
+    }
+    .nav-logo em { color: var(--red); font-style: normal; }
+
+    .nav-right { display: flex; align-items: center; gap: 32px; }
+    .nav-links { display: flex; gap: 24px; list-style: none; }
+    .nav-links a {
+      font-size: 11px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(255,255,255,0.75);
+      text-decoration: none; transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--white); }
+
+    .nav-lang { display: flex; gap: 4px; }
+    .lang-btn {
+      background: transparent; border: 1px solid var(--bw);
+      color: rgba(255,255,255,0.75); font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; padding: 5px 11px; cursor: pointer;
+      text-transform: uppercase; transition: all .2s;
+    }
+    .lang-btn.active, .lang-btn:hover {
+      background: var(--red); border-color: var(--red); color: var(--white);
+    }
+
+    /* ── HERO ── */
+    .hero {
+      width: 100%; height: 100vh; min-height: 500px;
+      position: relative; overflow: hidden;
+    }
+    .hero > img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center; display: block;
+    }
+    .hero-scroll {
+      position: absolute; bottom: 28px; left: 50%;
+      transform: translateX(-50%); z-index: 10;
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
+      color: rgba(255,255,255,0.55); font-size: 9px; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+    .hero-scroll svg { width: 18px; height: 18px; }
+    @keyframes bounce {
+      0%,100% { transform: translateX(-50%) translateY(0); }
+      50%      { transform: translateX(-50%) translateY(7px); }
+    }
+
+    /* ── ABOUT (white) ── */
+    .about { background: var(--white); padding: 100px 56px 110px; }
+    .about-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1.6fr;
+      gap: 80px; align-items: start;
+    }
+    .about-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--red); margin-bottom: 20px;
+    }
+    .about-heading {
+      font-size: clamp(32px,4vw,52px); font-weight: 900;
+      line-height: 1.05; color: var(--text); letter-spacing: -1px;
+    }
+    .about-heading em { color: var(--red); font-style: normal; }
+    .about-divider { width: 48px; height: 3px; background: var(--red); margin: 32px 0; }
+
+    .about-text p {
+      font-size: 15px; line-height: 1.8; color: var(--muted); margin-bottom: 20px;
+    }
+    .about-text p:last-child { margin-bottom: 0; }
+
+    .about-values { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 36px; }
+    .about-tag {
+      font-size: 10px; font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; padding: 7px 16px;
+      background: var(--red); border: 1.5px solid var(--red); color: var(--white);
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+    .about-tag.visible  { opacity: 1; transform: translateY(0); }
+    .about-tag:nth-child(1) { transition-delay: 0s; }
+    .about-tag:nth-child(2) { transition-delay: .35s; }
+    .about-tag:nth-child(3) { transition-delay: .70s; }
+
+    /* ── PORTFOLIO (red) ── */
+    .portfolio { background: var(--red); padding: 90px 56px 110px; }
+    .portfolio-header {
+      max-width: 1200px; margin: 0 auto 60px;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.22); padding-bottom: 24px;
+    }
+    .portfolio-title {
+      font-size: clamp(28px,3.5vw,44px); font-weight: 900;
+      color: var(--white); letter-spacing: -.5px;
+    }
+    .portfolio-subtitle {
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: rgba(255,255,255,0.55);
+    }
+    .portfolio-inner {
+      max-width: 1200px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 56px;
+    }
+    .col-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 28px; padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
+    .col-icon {
+      width: 36px; height: 36px;
+      border: 1.5px solid rgba(255,255,255,0.5);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .col-icon svg { width: 16px; height: 16px; fill: none; stroke: #fff; stroke-width: 1.8; }
+    .col-name {
+      font-size: 20px; font-weight: 900; color: var(--white);
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .col-count {
+      margin-left: auto; font-size: 10px; font-weight: 700;
+      letter-spacing: 2px; color: rgba(255,255,255,0.45); text-transform: uppercase;
+    }
+
+    /* ── CARDS ── */
+    .cards-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+    .card { display: flex; flex-direction: column; }
+
+    .card-window {
+      width: 100%; padding-top: 100%; /* 1:1 ratio via padding trick */
+      position: relative; overflow: hidden;
+      background: rgba(0,0,0,0.22);
+      border: 1px solid rgba(255,255,255,0.18);
+      cursor: pointer;
+      transition: border-color .22s, transform .22s;
+    }
+    .card-window:hover {
+      border-color: rgba(255,255,255,0.65);
+      transform: translateY(-3px);
+    }
+    /* "+" only on empty windows */
+    .card-window.empty::after {
+      content: '+';
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: 200; color: rgba(255,255,255,0.18);
+    }
+    /* logo images fill the window */
+    .card-window img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    /* protection overlay (blocks right-click on image) */
+    .card-window.protected::before {
+      content: '';
+      position: absolute; inset: 0;
+      z-index: 10; cursor: default;
+    }
+
+    .card-meta { margin-top: 8px; }
+    .card-meta-row {
+      display: flex; gap: 4px;
+      font-size: 9.5px; line-height: 1.8;
+      color: rgba(255,255,255,0.45); font-weight: 600;
+    }
+    .card-meta-row .key { color: rgba(255,255,255,0.65); }
+    .card-meta-row .val { color: var(--white); }
+    .card-sub { color: rgba(255,255,255,0.5); font-style: italic; font-weight: 400; }
+
+    /* ── TESTIMONIALS (off-white) ── */
+    .testimonials { background: var(--off); padding: 100px 56px 110px; }
+    .testi-inner { max-width: 1200px; margin: 0 auto; }
+    .section-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 4px;
+      text-transform: uppercase; color: var(--red); margin-bottom: 12px;
+    }
+    .section-heading {
+      font-size: clamp(28px,3.5vw,44px); font-weight: 900;
+      color: var(--text); letter-spacing: -.5px; margin-bottom: 56px;
+    }
+    .testi-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+    .testi-card {
+      background: var(--white); padding: 36px 32px;
+      border-bottom: 3px solid transparent;
+      transition: border-color .25s, transform .25s, box-shadow .25s;
+    }
+    .testi-card:hover {
+      border-color: var(--red); transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    }
+    .testi-quote { font-size: 38px; line-height: 1; color: var(--red); font-weight: 900; margin-bottom: 16px; }
+    .testi-text  { font-size: 14px; line-height: 1.75; color: var(--muted); margin-bottom: 28px; font-style: italic; }
+    .testi-author { display: flex; align-items: center; gap: 14px; }
+    .testi-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--red); display: flex; align-items: center;
+      justify-content: center; font-size: 15px; font-weight: 900;
+      color: var(--white); flex-shrink: 0;
+    }
+    .testi-name { font-size: 13px; font-weight: 800; color: var(--text); }
+    .testi-role { font-size: 10px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-top: 2px; }
+
+    /* ── FOOTER (red) ── */
+    footer { background: var(--red); color: var(--white); }
+    .footer-main {
+      max-width: 1200px; margin: 0 auto; padding: 70px 56px 50px;
+      display: grid; grid-template-columns: 1fr 2fr; gap: 80px; align-items: start;
+    }
+    .footer-logo-wrap { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+    .footer-logo-img {
+      width: 120px; height: 120px; border-radius: 50%; overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.25);
+    }
+    .footer-logo-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .footer-tagline {
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: rgba(255,255,255,0.6); line-height: 1.6;
+    }
+    .footer-cols { display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; }
+    .footer-col-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: rgba(255,255,255,0.5);
+      margin-bottom: 20px; padding-bottom: 10px;
+      border-bottom: 1px solid rgba(255,255,255,0.18);
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { font-size: 13px; line-height: 2; color: rgba(255,255,255,0.75); }
+    .footer-legal { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.7; }
+    .footer-legal em {
+      display: block; font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(255,255,255,0.3);
+      margin-bottom: 8px; font-style: normal;
+    }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.15);
+      padding: 20px 56px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .footer-copy { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 1px; }
+    .footer-mention {
+      font-size: 10px; font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(255,255,255,0.35);
+    }
+
+    /* ── LANGUAGE SYSTEM ── */
+    [data-lang]     { display: none !important; }
+    span[data-lang] { display: none !important; }
+    body.lang-en [data-lang="en"]     { display: block  !important; }
+    body.lang-en span[data-lang="en"] { display: inline !important; }
+    body.lang-de [data-lang="de"]     { display: block  !important; }
+    body.lang-de span[data-lang="de"] { display: inline !important; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav, nav.scrolled { padding: 16px 32px; }
+      .nav-links { display: none; }
+      .about-inner { grid-template-columns: 1fr; gap: 40px; }
+      .portfolio-inner { grid-template-columns: 1fr; gap: 48px; }
+      .portfolio, .about, .testimonials { padding: 70px 32px 90px; }
+      .testi-grid { grid-template-columns: 1fr; gap: 16px; }
+      .footer-main { grid-template-columns: 1fr; gap: 40px; padding: 50px 32px 40px; }
+      .footer-cols { grid-template-columns: 1fr 1fr; }
+      .footer-bottom { padding: 16px 32px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+    @media (max-width: 600px) {
+      .cards-grid { grid-template-columns: repeat(2,1fr); gap: 12px; }
+      .portfolio-header { flex-direction: column; align-items: flex-start; gap: 8px; }
+      .footer-cols { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="lang-de">
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <div class="nav-logo">UNIT<em>44</em></div>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#about"><span data-lang="en">About</span><span data-lang="de">Über uns</span></a></li>
+        <li><a href="#portfolio"><span data-lang="en">Portfolio</span><span data-lang="de">Portfolio</span></a></li>
+        <li><a href="#testimonials"><span data-lang="en">Clients</span><span data-lang="de">Kunden</span></a></li>
+      </ul>
+      <div class="nav-lang">
+        <button class="lang-btn active" onclick="setLang('de',this)">DE</button>
+        <button class="lang-btn"        onclick="setLang('en',this)">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <img src="Photo_homepage_2.jpeg" alt="UNIT44 — Design Breaks Borders" />
+    <div class="hero-scroll">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      <span data-lang="en">Scroll</span><span data-lang="de">Scrollen</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="about-inner">
+      <div>
+        <div class="about-label">
+          <span data-lang="en">About UNIT44</span>
+          <span data-lang="de">Über UNIT44</span>
+        </div>
+        <h2 class="about-heading">
+          <span data-lang="en">Ideas turned<br>into <em>Identity.</em></span>
+          <span data-lang="de">Ideen werden<br>zur <em>Identität.</em></span>
+        </h2>
+        <div class="about-divider"></div>
+        <div class="about-values" id="about-values">
+          <span class="about-tag">Kreativ</span>
+          <span class="about-tag">Rebellious</span>
+          <span class="about-tag">Different</span>
+        </div>
+      </div>
+      <div>
+        <div class="about-text" data-lang="en">
+          <p>UNIT44 was born from a simple refusal — the refusal to blend in. In a world saturated with generic visuals and uninspired branding, we chose to do the opposite: design identities that break rules, challenge expectations, and leave a mark.</p>
+          <p>We create logos and clothing designs for brands, artists, and entrepreneurs who share one conviction: being different is not a risk — it's a strategy. Every project is treated as a unique act of creation, built from scratch, without templates, without compromise.</p>
+          <p>From multimedia companies to traditional businesses, from independent labels to emerging streetwear concepts — UNIT44 works with those who dare to stand out. Bold identity, no limits, just ideas.</p>
+        </div>
+        <div class="about-text" data-lang="de">
+          <p>UNIT44 entstand aus einer einfachen Weigerung — der Weigerung, sich anzupassen. In einer Welt voller generischer Visuals und uninspirierter Marken haben wir uns entschieden, das Gegenteil zu tun: Identitäten zu gestalten, die Regeln brechen, Erwartungen herausfordern und Spuren hinterlassen.</p>
+          <p>Wir erstellen Logos und Bekleidungsdesigns für Marken, Künstler und Unternehmer, die eine Überzeugung teilen: Anders zu sein ist kein Risiko — es ist eine Strategie. Jedes Projekt wird als einzigartiger Schöpfungsakt behandelt, von Grund auf neu, ohne Vorlagen, ohne Kompromisse.</p>
+          <p>Von Multimediaunternehmen bis hin zu traditionellen Unternehmen, von unabhängigen Labels bis hin zu aufkommenden Streetwear-Konzepten — UNIT44 arbeitet mit denen, die es wagen, aufzufallen. Starke Identität, keine Grenzen, nur Ideen.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PORTFOLIO -->
+  <section class="portfolio" id="portfolio">
+    <div class="portfolio-header">
+      <div class="portfolio-title">
+        <span data-lang="en">Our Work</span>
+        <span data-lang="de">Unsere Arbeit</span>
+      </div>
+      <div class="portfolio-subtitle">Kreativ · Rebellious · Different</div>
+    </div>
+
+    <div class="portfolio-inner">
+
+      <!-- LOGOS -->
+      <div class="col-logos">
+        <div class="col-header">
+          <div class="col-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M3 12h18"/></svg>
+          </div>
+          <span class="col-name">Logo Design</span>
+          <span class="col-count">
+            <span data-lang="en">6 creations</span>
+            <span data-lang="de">6 Kreationen</span>
+          </span>
+        </div>
+        <div class="cards-grid">
+
+          <div class="card">
+            <div class="card-window protected" oncontextmenu="return false">
+              <img src="logo_j_against_2.jpeg" alt="" draggable="false" />
+            </div>
+            <div class="card-meta">
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">Jane Against <span class="card-sub"><span data-lang="en">(author, novelist)</span><span data-lang="de">(Autor, Schriftsteller)</span></span></span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">Deutschland</span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">2025</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-window protected" oncontextmenu="return false">
+              <img src="logo_hereweboat.jpeg" alt="" draggable="false" />
+            </div>
+            <div class="card-meta">
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">Here We Boat <span class="card-sub"><span data-lang="en">(boat rental)</span><span data-lang="de">(Bootsverleih)</span></span></span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">France</span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">2025</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-window protected" oncontextmenu="return false">
+              <img src="logo_J_against_1.jpeg" alt="" draggable="false" />
+            </div>
+            <div class="card-meta">
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">Jane Against <span class="card-sub"><span data-lang="en">(author, novelist)</span><span data-lang="de">(Autor, Schriftsteller)</span></span></span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">Deutschland</span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">2026</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-window protected" oncontextmenu="return false">
+              <img src="logo_vortex.jpeg" alt="" draggable="false" />
+            </div>
+            <div class="card-meta">
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">Vortex Core <span class="card-sub"><span data-lang="en">(business consulting)</span><span data-lang="de">(Unternehmensberatung)</span></span></span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">Uganda</span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">2026</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-window protected" oncontextmenu="return false">
+              <img src="logo_fritage.jpeg" alt="" draggable="false" />
+            </div>
+            <div class="card-meta">
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">Fritage <span class="card-sub"><span data-lang="en">(chip shop)</span><span data-lang="de">(Frittenbude)</span></span></span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">Belgien</span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">2026</span></div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-window protected" oncontextmenu="return false">
+              <img src="logo_Maexle.jpeg" alt="" draggable="false" />
+            </div>
+            <div class="card-meta">
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">Maexle <span class="card-sub"><span data-lang="en">(Gamer)</span><span data-lang="de">(Gamer)</span></span></span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val"><span data-lang="en">Germany</span><span data-lang="de">Deutschland</span></span></div>
+              <div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">2026</span></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- T-SHIRTS -->
+      <div class="col-tshirts">
+        <div class="col-header">
+          <div class="col-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 6l3-3 6 3 6-3 3 3-3 3v10H6V9L3 6z"/></svg>
+          </div>
+          <span class="col-name">Clothing Design</span>
+          <span class="col-count">
+            <span data-lang="en">6 creations</span>
+            <span data-lang="de">6 Kreationen</span>
+          </span>
+        </div>
+        <div class="cards-grid">
+
+          <div class="card"><div class="card-window empty"></div><div class="card-meta"><div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">—</span></div></div></div>
+          <div class="card"><div class="card-window empty"></div><div class="card-meta"><div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">—</span></div></div></div>
+          <div class="card"><div class="card-window empty"></div><div class="card-meta"><div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">—</span></div></div></div>
+          <div class="card"><div class="card-window empty"></div><div class="card-meta"><div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">—</span></div></div></div>
+          <div class="card"><div class="card-window empty"></div><div class="card-meta"><div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">—</span></div></div></div>
+          <div class="card"><div class="card-window empty"></div><div class="card-meta"><div class="card-meta-row"><span class="key"><span data-lang="en">Co.&nbsp;</span><span data-lang="de">Unt.&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Country&nbsp;</span><span data-lang="de">Land&nbsp;</span></span><span class="val">—</span></div><div class="card-meta-row"><span class="key"><span data-lang="en">Year&nbsp;</span><span data-lang="de">Jahr&nbsp;</span></span><span class="val">—</span></div></div></div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials" id="testimonials">
+    <div class="testi-inner">
+      <div class="section-label"><span data-lang="en">Client Testimonials</span><span data-lang="de">Kundenstimmen</span></div>
+      <h2 class="section-heading"><span data-lang="en">They trusted UNIT44.</span><span data-lang="de">Sie vertrauten UNIT44.</span></h2>
+      <div class="testi-grid">
+        <div class="testi-card"><div class="testi-quote">"</div><p class="testi-text" data-lang="en">UNIT44 delivered exactly what we needed — a logo that looks like nothing else in our industry. Bold, clean, and instantly recognizable.</p><p class="testi-text" data-lang="de">UNIT44 hat genau das geliefert, was wir brauchten — ein Logo, das in unserer Branche einzigartig ist. Mutig, klar und sofort erkennbar.</p><div class="testi-author"><div class="testi-avatar">A</div><div><div class="testi-name">— À préciser —</div><div class="testi-role"><span data-lang="en">To be confirmed</span><span data-lang="de">Wird bestätigt</span></div></div></div></div>
+        <div class="testi-card"><div class="testi-quote">"</div><p class="testi-text" data-lang="en">We came with a vague concept and left with a full visual identity. The process was fast, the vision was sharp.</p><p class="testi-text" data-lang="de">Wir kamen mit einem vagen Konzept und gingen mit einer vollständigen visuellen Identität. Der Prozess war schnell, die Vision präzise.</p><div class="testi-author"><div class="testi-avatar">B</div><div><div class="testi-name">— À préciser —</div><div class="testi-role"><span data-lang="en">To be confirmed</span><span data-lang="de">Wird bestätigt</span></div></div></div></div>
+        <div class="testi-card"><div class="testi-quote">"</div><p class="testi-text" data-lang="en">Our streetwear line needed a visual edge. UNIT44 created something raw, rebellious, and perfectly on-brand. The first drop sold out.</p><p class="testi-text" data-lang="de">Unsere Streetwear-Linie brauchte einen visuellen Vorsprung. UNIT44 schuf etwas Rohes, Rebellisches und perfekt Markenkonformes.</p><div class="testi-author"><div class="testi-avatar">C</div><div><div class="testi-name">— À préciser —</div><div class="testi-role"><span data-lang="en">To be confirmed</span><span data-lang="de">Wird bestätigt</span></div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-main">
+      <div class="footer-logo-wrap">
+        <div class="footer-logo-img"><img src="Logo_1.jpeg" alt="UNIT44" /></div>
+        <div class="footer-tagline">Don't ask for Permission<br>to be different</div>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col"><div class="footer-col-title"><span data-lang="en">Services</span><span data-lang="de">Leistungen</span></div><ul><li>Logo Design</li><li>Clothing Design</li><li><span data-lang="en">Brand Identity</span><span data-lang="de">Markenidentität</span></li><li><span data-lang="en">Visual Consulting</span><span data-lang="de">Visuelle Beratung</span></li></ul></div>
+        <div class="footer-col"><div class="footer-col-title"><span data-lang="en">Contact</span><span data-lang="de">Kontakt</span></div><ul><li>contact@unit44.com</li><li><span data-lang="en">Germany</span><span data-lang="de">Deutschland</span></li></ul></div>
+        <div class="footer-col"><div class="footer-col-title"><span data-lang="en">Legal</span><span data-lang="de">Rechtliches</span></div><div class="footer-legal"><em><span data-lang="en">To be completed</span><span data-lang="de">Wird ergänzt</span></em><span data-lang="en">Legal mentions, SIRET, VAT and terms will appear here.</span><span data-lang="de">Impressum, SIRET, USt-IdNr. und Nutzungsbedingungen erscheinen hier.</span></div></div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 UNIT44 — All rights reserved</div>
+      <div class="footer-mention">Kreativ · Rebellious · Different</div>
+    </div>
+  </footer>
+
+  <script>
+    function setLang(lang, btn) {
+      document.body.className = 'lang-' + lang;
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 60); });
+    const tagsEl = document.getElementById('about-values');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.querySelectorAll('.about-tag').forEach(t => t.classList.add('visible'));
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    if (tagsEl) obs.observe(tagsEl);
+    document.querySelectorAll('.col-logos img').forEach(img => { img.addEventListener('dragstart', e => e.preventDefault()); });
+  </script>
+
+</body>
+</html>
