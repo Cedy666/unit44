@@ -317,8 +317,10 @@
       .nav-logo { font-size: 18px; letter-spacing: 3px; }
       .lang-btn { padding: 8px 12px; font-size: 9px; min-height: 36px; }
       .nav-right { gap: 16px; }
-      .hero { height: 75vh; height: 75svh; min-height: 420px; }
-      .hero > img { object-position: top center; }
+      /* Hero : image entiere sur mobile */
+      .hero { height: auto; min-height: unset; }
+      .hero > img { height: auto; object-fit: unset; }
+      .hero-scroll { bottom: 16px; }
       .about, .testimonials { padding: 60px 20px 70px; }
       .portfolio { padding: 60px 20px 70px; }
       .about-inner { gap: 32px; }
