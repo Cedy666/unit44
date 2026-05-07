@@ -308,15 +308,17 @@
       .footer-main { grid-template-columns: 1fr; gap: 40px; padding: 50px 32px 40px; }
       .footer-cols { grid-template-columns: 1fr 1fr; }
       .footer-bottom { padding: 16px 32px; flex-direction: column; gap: 6px; text-align: center; }
+      .col-tshirts { padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.30); }
     }
 
-    /* ── MOBILE (600px) ── */
+    /* MOBILE 600px */
     @media (max-width: 600px) {
       nav, nav.scrolled { padding: 14px 20px; }
       .nav-logo { font-size: 18px; letter-spacing: 3px; }
       .lang-btn { padding: 8px 12px; font-size: 9px; min-height: 36px; }
       .nav-right { gap: 16px; }
-      .hero { height: 100vh; height: 100svh; min-height: 500px; }
+      .hero { height: 75vh; height: 75svh; min-height: 420px; }
+      .hero > img { object-position: top center; }
       .about, .testimonials { padding: 60px 20px 70px; }
       .portfolio { padding: 60px 20px 70px; }
       .about-inner { gap: 32px; }
@@ -335,7 +337,7 @@
       .footer-logo-img { width: 90px; height: 90px; }
     }
 
-    /* ── TRES PETITS TELEPHONES (390px) ── */
+    /* TRES PETITS TELEPHONES 390px */
     @media (max-width: 390px) {
       nav, nav.scrolled { padding: 12px 16px; }
       .nav-logo { font-size: 16px; letter-spacing: 2px; }
