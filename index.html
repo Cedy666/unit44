@@ -312,14 +312,10 @@
       .col-tshirts { padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.30); }
     }
 
-    /* PORTRAIT TABLET — hero demarre sous le nav, evite overlap photo/UNIT44 */
-    @media (orientation: portrait) and (max-width: 1100px) {
-      .hero { margin-top: 70px !important; height: calc(100vh - 70px) !important; min-height: 0 !important; }
-    }
-
-    /* TABLET LANDSCAPE */
-    @media (orientation: landscape) and (max-height: 1200px) and (min-width: 600px) {
-      .hero { height: 50vw !important; min-height: 0 !important; }
+    /* TABLET (portrait + paysage) — image affichee en ratio naturel 2:1, sous le nav */
+    @media (min-width: 601px) and (max-width: 1366px) {
+      .hero { margin-top: 67px !important; height: auto !important; min-height: 0 !important; }
+      .hero > img { height: auto !important; object-fit: unset !important; }
     }
 
     /* MOBILE 600px */
