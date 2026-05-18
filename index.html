@@ -312,8 +312,13 @@
       .col-tshirts { padding-top: 48px; border-top: 1px solid rgba(255,255,255,0.30); }
     }
 
+    /* PORTRAIT TABLET — hero demarre sous le nav, evite overlap photo/UNIT44 */
+    @media (orientation: portrait) and (max-width: 1100px) {
+      .hero { margin-top: 70px !important; height: calc(100vh - 70px) !important; min-height: 0 !important; }
+    }
+
     /* TABLET LANDSCAPE */
-    @media (orientation: landscape) and (max-height: 900px) {
+    @media (orientation: landscape) and (max-height: 1200px) and (min-width: 600px) {
       .hero { height: 50vw !important; min-height: 0 !important; }
     }
 
