@@ -358,7 +358,23 @@
       .footer-main { padding: 36px 16px 24px; }
       .footer-bottom { padding: 14px 16px; }
     }
-    </style>
+    
+/* T-shirt order modal */
+#tshirt-modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:9999;align-items:center;justify-content:center;}
+#tshirt-modal-overlay.open{display:flex;}
+#tshirt-modal{background:#111;border:1px solid #333;border-radius:8px;width:340px;max-width:90vw;overflow:hidden;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.8);}
+#tshirt-modal .modal-img{width:100%;height:200px;object-fit:cover;display:block;}
+#tshirt-modal .modal-body{padding:20px;}
+#tshirt-modal .modal-title{font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;margin:0 0 18px;}
+#tshirt-modal .modal-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#666;margin-bottom:8px;}
+#tshirt-modal .size-grid{display:flex;gap:6px;margin-bottom:20px;}
+#tshirt-modal .size-btn{flex:1;padding:9px 4px;border:1px solid #333;background:transparent;color:#aaa;font-size:11px;font-weight:600;cursor:pointer;border-radius:3px;transition:all .15s;font-family:inherit;}
+#tshirt-modal .size-btn:hover{border-color:#666;color:#fff;}
+#tshirt-modal .size-btn.selected{border-color:var(--red);background:var(--red);color:#fff;}
+#tshirt-modal .modal-order-btn{width:100%;padding:13px;background:var(--red);border:none;color:#fff;font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;cursor:pointer;border-radius:3px;font-family:inherit;transition:opacity .15s;}
+#tshirt-modal .modal-order-btn:hover{opacity:.85;}
+#tshirt-modal .modal-close{position:absolute;top:10px;right:12px;background:rgba(0,0,0,.6);border:none;color:#fff;font-size:16px;cursor:pointer;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1;font-family:inherit;}
+</style>
 </head>
 <body class="lang-de">
 
@@ -455,7 +471,7 @@
           <div class="card"><div class="card-window protected" oncontextmenu="return false"><img src="T8_unit_monster.jpeg" alt="" draggable="false" /></div><div class="card-meta"><div class="card-meta-row"><span class="val">T-shirt Unit Monster</span></div></div></div>
           <div class="card"><div class="card-window protected" oncontextmenu="return false"><img src="T9_Permission.jpeg" alt="" draggable="false" /></div><div class="card-meta"><div class="card-meta-row"><span class="val">T-shirt Permission</span></div></div></div>
           <div class="card"><div class="card-window protected" oncontextmenu="return false"><img src="T10_Beindrukend.jpeg" alt="" draggable="false" /></div><div class="card-meta"><div class="card-meta-row"><span class="val">T-shirt Beeindruckend</span></div></div></div>
-          <div class="card"><div class="card-window protected" oncontextmenu="return false"><img src="T12_Alergic_Reaction.jpeg" alt="" draggable="false" /></div><div class="card-meta"><div class="card-meta-row"><span class="val">T-shirt Allergische Reaktion</span></div></div></div>
+          <div class="card" onclick="openTshirtModal('Allergische Reaktion','T12_Alergic_Reaction.jpeg')" style="cursor:pointer"><div class="card-window protected" oncontextmenu="return false"><img src="T12_Alergic_Reaction.jpeg" alt="" draggable="false" /></div><div class="card-meta"><div class="card-meta-row"><span class="val">T-shirt Allergische Reaktion</span></div></div></div>
           <div class="card"><div class="card-window empty"></div><div class="card-meta"><div class="card-meta-row"><span class="val">—</span></div></div></div>
           <div class="card"><div class="card-window empty"></div><div class="card-meta"><div class="card-meta-row"><span class="val">—</span></div></div></div>
           <div class="card"><div class="card-window empty"></div><div class="card-meta"><div class="card-meta-row"><span class="val">—</span></div></div></div>
@@ -638,6 +654,32 @@
     document.querySelectorAll('.col-logos img').forEach(img => { img.addEventListener('dragstart', e => e.preventDefault()); });
   </script>
 
+
+<div id="tshirt-modal-overlay" onclick="if(event.target===this)closeTshirtModal()">
+  <div id="tshirt-modal">
+    <button class="modal-close" onclick="closeTshirtModal()">&#x2715;</button>
+    <img id="modal-img" class="modal-img" src="" alt="" />
+    <div class="modal-body">
+      <div class="modal-title" id="modal-name"></div>
+      <div class="modal-label">Size</div>
+      <div class="size-grid">
+        <button class="size-btn" onclick="selectSize(this)">S</button>
+        <button class="size-btn" onclick="selectSize(this)">M</button>
+        <button class="size-btn selected" onclick="selectSize(this)">L</button>
+        <button class="size-btn" onclick="selectSize(this)">XL</button>
+        <button class="size-btn" onclick="selectSize(this)">XXL</button>
+      </div>
+      <button class="modal-order-btn" onclick="orderTshirt()">Order &#8212; Coming Soon</button>
+    </div>
+  </div>
+</div>
+<script>
+function openTshirtModal(name,img){document.getElementById('modal-name').textContent=name;document.getElementById('modal-img').src=img;document.getElementById('tshirt-modal-overlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeTshirtModal(){document.getElementById('tshirt-modal-overlay').classList.remove('open');document.body.style.overflow='';}
+function selectSize(btn){document.querySelectorAll('#tshirt-modal .size-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');}
+function orderTshirt(){alert('Order functionality coming soon!');}
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeTshirtModal();});
+</script>
 </body>
 </html>
 
